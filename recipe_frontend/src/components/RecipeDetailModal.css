@@ -1,0 +1,107 @@
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  top:0; left:0; bottom:0; right:0;
+  background: rgba(37, 37, 37, 0.57);
+  z-index: 9001;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 60px;
+  animation: modal-fade-in 0.23s;
+}
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Modal window */
+.modal-content {
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0 16px 48px 12px rgba(76, 175, 80, 0.18);
+  max-width: 480px;
+  min-width: 295px;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 60px;
+}
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  background: var(--primary);
+  color: #fff;
+  padding: 19px 30px 12px 19px;
+}
+.modal-img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 11px;
+  box-shadow: 0 0 8px 0 #aaa3;
+  background: #fafafa;
+  margin-right: 6px;
+}
+.modal-title {
+  font-size: 1.55rem;
+  line-height: 1.25;
+  margin: 0 0 5px 0;
+  font-weight: 700;
+}
+.modal-meta {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 4px;
+}
+.modal-pill {
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.96rem;
+  border-radius: 11px;
+  padding: 2.5px 11px;
+  display: inline-block;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 2.1rem;
+  position: absolute;
+  right: 21px;
+  top: 12px;
+  cursor: pointer;
+  line-height: 1.0;
+  z-index: 30;
+  border-radius: 6px;
+}
+.close-btn:focus,
+.close-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.modal-body {
+  padding: 20px 22px 25px 28px;
+  background: #fff;
+  color: var(--text-dark);
+}
+.modal-ingredient-list, .modal-instructions {
+  margin: 0 0 16px 0;
+  padding-left: 25px;
+  font-size: 1.02rem;
+}
+.modal-ingredient-list li,
+.modal-instructions li {
+  margin-bottom: 4.5px;
+}
+.modal-instructions {
+  list-style-type: decimal;
+}
+@media (max-width: 500px) {
+  .modal-content { padding: 0px; min-width: 96vw; }
+  .modal-header, .modal-body { padding: 12px 8px 9px 6px; }
+  .modal-header { flex-direction: column; gap: 9px; }
+}

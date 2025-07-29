@@ -1,47 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import sampleRecipes from "./sampleRecipes";
+import Navbar from "./components/Navbar";
+import RecipeGrid from "./components/RecipeGrid";
+import RecipeDetailModal from "./components/RecipeDetailModal";
 
-// PUBLIC_INTERFACE
+/**
+ * PUBLIC_INTERFACE
+ * App entry point for the Recipe Explorer application.
+ * Features: Top navbar, grid card layout of recipes, search, detail modal.
+ */
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [search, setSearch] = useState(""); // Search query state
+  const [selectedRecipe, setSelectedRecipe] = useState(null); // Currently opened recipe
 
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+  // Filter recipes based on search string (case-insensitive name & ingredient match)
+  const filteredRecipes = sampleRecipes.filter((recipe) => {
+    const query = search.trim().toLowerCase();
+    return (
+      recipe.name.toLowerCase().includes(query) ||
+      recipe.ingredients.some((ing) => ing.toLowerCase().includes(query))
+    );
+  });
 
   // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+  const handleRecipeClick = (recipe) => {
+    setSelectedRecipe(recipe);
   };
 
+  // PUBLIC_INTERFACE
+  const handleRecipeModalClose = () => {
+    setSelectedRecipe(null);
+  };
+
+  // PUBLIC_INTERFACE
+  const handleSearchChange = (e) => setSearch(e.target.value);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-bg">
+      <Navbar
+        search={search}
+        onSearchChange={handleSearchChange}
+      />
+      <main>
+        {filteredRecipes.length > 0 ? (
+          <RecipeGrid
+            recipes={filteredRecipes}
+            onRecipeClick={handleRecipeClick}
+          />
+        ) : (
+          <div className="no-results">No recipes found.</div>
+        )}
+      </main>
+      {selectedRecipe && (
+        <RecipeDetailModal
+          recipe={selectedRecipe}
+          onClose={handleRecipeModalClose}
+        />
+      )}
+      <footer className="footer-bar">
+        <span>
+          Powered by <span className="accent">React</span> • Demo generated for Kavia • Theme controls above
+        </span>
+      </footer>
     </div>
   );
 }
